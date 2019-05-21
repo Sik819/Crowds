@@ -10,6 +10,7 @@ public class MessageTrackCheck {
 
 		// TODO
 		this.offset = offset;
+		runningSum = offset;
 		
 		
 	}
@@ -28,9 +29,8 @@ public class MessageTrackCheck {
 		//       0..25 correspond to a..z
 		
 		// TODO
-		int result = 0;
-		result = this.runningSum % 26;
-		
+		int result = this.runningSum % 26;
+		result += 97;
 		return (char)result;
 	}
 	

@@ -144,7 +144,7 @@ public class AllTests {
 		Network net = new Network();
 		net.track = new MessageTrackCheck(0);
 		
-		String nodePath = "C:\\Users\\Surface\\Downloads\\nodedef1.in";
+		String nodePath = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\nodedef1.in";
 		nodePath = nodePath.replace("\\", "/");
 
 		String nodeFileInName = nodePath;		// CHANGE THIS FILENAME
@@ -171,7 +171,7 @@ public class AllTests {
 		net.track = new MessageTrackCheck(0);
 
 		
-		String nodePath = "C:\\Users\\Surface\\Downloads\\nodedef1.in";
+		String nodePath = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\nodedef1.in";
 		nodePath = nodePath.replace("\\", "/");
 
 		String nodeFileInName = nodePath;
@@ -196,7 +196,7 @@ public class AllTests {
 		Network net = new Network();
 		net.track = new MessageTrackCheck(0);
 		
-		String nodePath = "C:\\Users\\Surface\\Downloads\\nodedef1.in";
+		String nodePath = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\nodedef1.in";
 		nodePath = nodePath.replace("\\", "/");
 
 		String nodeFileInName = nodePath;
@@ -253,7 +253,7 @@ public class AllTests {
 	public void testSetCorruptA() {
 		Network net = new Network();
 		net.track = new MessageTrackCheck(0);
-		String nodePath = "C:\\Users\\Surface\\Downloads\\nodedef1.in";
+		String nodePath = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\nodedef1.in";
 		nodePath = nodePath.replace("\\", "/");
 		String nodeFileInName = nodePath;
 
@@ -282,7 +282,7 @@ public class AllTests {
 	public void testSetCorruptB() {
 		Network net = new Network();
 		net.track = new MessageTrackCheck(0);
-		String nodePath = "C:\\Users\\Surface\\Downloads\\nodedef1.in";
+		String nodePath = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\nodedef1.in";
 		nodePath = nodePath.replace("\\", "/");
 
 		String nodeFileInName = nodePath;
@@ -312,11 +312,11 @@ public class AllTests {
 	public void testGuessInitiator() {
 		Network net = new Network();
 		net.track = new MessageTrackCheck(0);
-		String nodePath = "C:\\Users\\Surface\\Downloads\\nodedef1.in";
+		String nodePath = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\nodedef1.in";
 		nodePath = nodePath.replace("\\", "/");
 
 		String nodeFileInName = nodePath;
-		String msgFileInName = "C:\\Users\\Surface\\Downloads\\msg0.in";
+		String msgFileInName = "C:\\Users\\Ziki\\Desktop\\Fahmid 225\\Assignment 2\\msg0.in";
 		msgFileInName = msgFileInName.replace("\\", "/");
 
 		try {
