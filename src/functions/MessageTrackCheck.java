@@ -32,6 +32,7 @@ public class MessageTrackCheck {
 		int result = this.runningSum % 26;
 		result += 97;
 		return (char)result;
+		
 	}
 	
 	public void reset(Integer offset) {

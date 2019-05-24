@@ -38,8 +38,15 @@ public class NodeTransitionFunction {
 		// POST: Implements f(val), with val as a BigInteger
 
 		// TODO
-		
-		return null;
+		BigInteger kval = BigInteger.valueOf(kVal);
+		BigInteger xPowExp = BigInteger.ONE;
+		BigInteger fx = null;
+		for(int i = 0; i < exp/2 ;i++) xPowExp = xPowExp.multiply(val);
+		fx = xPowExp.mod(kval);
+		fx= fx.multiply(fx);
+		if(exp%2!=0) fx =fx.multiply(val.mod(kval));
+		fx = fx.mod(kval);  //Identity.. (ab) mod p = ((a mod p)(b mod p)) mod p
+		return fx;
 	}
 
 

@@ -103,7 +103,8 @@ public class Node {
 		//      f is the forward transition function
 		// POST: invokes receiveMsgFromNode on node n
 
-		// TODO
+		this.hasTransmitted = true;
+		n.receiveMsgFromNode(msg,this.getID(),r,f);
 	}
 	
 	public void receiveMsgFromNode(String msg, Integer id, Integer r, NodeTransitionFunction f) {
@@ -139,6 +140,17 @@ public class Node {
 		//       Add ID of current (receiving) node to local MessageTrackCheck
 
 		// TODO
+		fFunction = f;
+		this.message.add(this.ID);
+		if(this.isDestinationNode(msg)) {
+			augmentedMessage = msg;
+			return;
+		}
+		else {
+			BigInteger nextNodeID = this.fFunction.apply(r).mod(BigInteger.valueOf(Nodes.size()));    //  v(i+1) = r(i+1) mod N  = f(r) mod N
+			Node n = Nodes.get(nextNodeID.intValue());
+			this.sendMsgToNode(n,msg,this.fFunction.apply(r),this.fFunction);
+		}
 	}
 	
 	public String getMsg() {
@@ -193,7 +205,7 @@ public class Node {
 		for(int i = 0; i<k-1;i++) {
 			temp = gFunction.apply(temp);
 		}
-		return temp%Nodes.size();
+		return temp;
 		
 	}
 
@@ -204,8 +216,13 @@ public class Node {
 
 		// TODO
 
-		return null;
-	}
+		this.createForwardNodeTransitionFunction();
+		BigInteger temp = v;
+		for(int i = 0; i<k-1;i++) {
+			temp = gFunction.apply(temp);
+		}
+		return temp;
+		}
 	
 
 	public void initiateMessage(String msg, Integer k, Integer v) {
@@ -213,13 +230,14 @@ public class Node {
 		// POST: Adds destination ID to msg; 
 		//       sends augmented msg to the next node, as determined by firstRForInitiatingMessage(k, v), 
 		//       along with forward transition function
-		
 		String message = addDestIDToMsg(msg,v);
-		int nextNodeID = firstRForInitiatingMessage(k,v);
+		int nextNodeID = firstRForInitiatingMessage(k,v)%Nodes.size();;
 		Node n = Nodes.get(nextNodeID);	
 		this.message.add(this.ID);
-		sendMsgToNode(n,message,fFunction.apply(fFunction.apply(v)),fFunction);
+		if(!useBI) sendMsgToNode(n,message,fFunction.apply(fFunction.apply(v)),fFunction);
+		else sendMsgToNode(n,message,BigInteger.valueOf(fFunction.apply(fFunction.apply(v))),fFunction);;
 	}
+	
 	
 	public Integer getID() {
 		// PRE: -
