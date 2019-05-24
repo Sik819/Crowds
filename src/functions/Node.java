@@ -19,10 +19,19 @@ import javax.crypto.Cipher;
 
 
 public class Node {
+	private final int ID;
+	private int fExp;
+	private int gExp;
+	private int divisor;
+	private boolean encrypt;
+	private boolean useBI;
+	private Map<Integer,Node> Nodes;
+	protected MessageTrackCheck message;
+	private String augmentedMessage;
+	protected NodeTransitionFunction fFunction;
+	private NodeTransitionFunction gFunction;
+	private boolean hasTransmitted;
 
-
-	
-	
 	public Node(Integer n, Integer e, Integer d, Integer K, Boolean encrypt, Boolean useBI, Map<Integer,Node> m, MessageTrackCheck t) {
 		// CONSTRUCTOR: 
 		//      n is node ID,
@@ -34,8 +43,16 @@ public class Node {
 		//      m is a non-null map of node IDs to node objects
 		//      t is an instance of MessageTrackCheck
 
-		// TODO
-	}
+		this.ID = n;
+		this.fExp = e;
+		this.gExp = d;
+		this.divisor = K;
+		this.encrypt = encrypt;
+		this.useBI = useBI;
+		this.Nodes = m;
+		this.message = t;
+		this.gFunction = new NodeTransitionFunction(gExp,divisor);
+		}
 	
 	public Boolean hasMsgEncryption() {
 		// PRE: -
@@ -52,8 +69,9 @@ public class Node {
 		//       E.g. For node 6, will return true for "hello006"
 
 		// TODO
-		
-		return null;
+		String msgID = msg.substring(msg.length()-3,msg.length());
+		int id = Integer.valueOf(msgID);
+		return id==this.ID;
 	}
 
 
@@ -63,7 +81,7 @@ public class Node {
 
 		// TODO
 		
-		return null;
+		return hasTransmitted;
 	}
 
 	public void sendMsgToNode(Node n, String msg, Integer r, NodeTransitionFunction f) {
@@ -74,6 +92,8 @@ public class Node {
 		// POST: invokes receiveMsgFromNode on node n
 
 		// TODO
+		this.hasTransmitted = true;
+		n.receiveMsgFromNode(msg,this.getID(),r,f);
 	}
 	
 	public void sendMsgToNode(Node n, String msg, BigInteger r, NodeTransitionFunction f) {
@@ -96,6 +116,17 @@ public class Node {
 		//       Add ID of current (receiving) node to local MessageTrackCheck
 
 		// TODO
+		fFunction = f;
+		this.message.add(this.ID);
+		if(this.isDestinationNode(msg)) {
+			augmentedMessage = msg;
+			return;
+		}
+		else {
+			int nextNodeID = this.fFunction.apply(r) % Nodes.size();    //  v(i+1) = r(i+1) mod N  = f(r) mod N
+			Node n = Nodes.get(nextNodeID);
+			this.sendMsgToNode(n,msg,this.fFunction.apply(r),this.fFunction);
+		}
 	}
 
 	public void receiveMsgFromNode(String msg, Integer id, BigInteger r, NodeTransitionFunction f) {
@@ -116,7 +147,7 @@ public class Node {
 
 		// TODO
 
-		return null;
+		return augmentedMessage.substring(0,augmentedMessage.length()-3);
 	}
 
 	/*
@@ -132,8 +163,9 @@ public class Node {
 		// POST: Creates a NodeTransitionFunction using this node's public function f() with parameters e, K
 		
 		// TODO
-
-		return null;
+		NodeTransitionFunction temp = new NodeTransitionFunction(fExp,divisor);
+		fFunction = temp;
+		return fFunction;
 	}
 	
 	public String addDestIDToMsg(String msg, Integer v) {
@@ -142,8 +174,12 @@ public class Node {
 		//       E.g. for msg="hello", v=6, returns "hello006"
 		
 		// TODO
-
-		return null;
+		String temp = Integer.toString(v);
+		if(temp.length() == 1)
+			return msg + "00" + (Integer.toString(v));
+		if(temp.length()==2)
+			return msg + "0" + (Integer.toString(v));
+		return msg + (Integer.toString(v));
 	}
 
 	public Integer firstRForInitiatingMessage(Integer k, Integer v) {
@@ -152,8 +188,13 @@ public class Node {
 		//       returns value of r that determines first step on node path
 
 		// TODO
-
-		return null;
+		this.createForwardNodeTransitionFunction();
+		int temp = v;
+		for(int i = 0; i<k-1;i++) {
+			temp = gFunction.apply(temp);
+		}
+		return temp%Nodes.size();
+		
 	}
 
 	public BigInteger firstRForInitiatingMessage(Integer k, BigInteger v) {
@@ -173,7 +214,11 @@ public class Node {
 		//       sends augmented msg to the next node, as determined by firstRForInitiatingMessage(k, v), 
 		//       along with forward transition function
 		
-		// TODO
+		String message = addDestIDToMsg(msg,v);
+		int nextNodeID = firstRForInitiatingMessage(k,v);
+		Node n = Nodes.get(nextNodeID);	
+		this.message.add(this.ID);
+		sendMsgToNode(n,message,fFunction.apply(fFunction.apply(v)),fFunction);
 	}
 	
 	public Integer getID() {
@@ -182,7 +227,7 @@ public class Node {
 
 		// TODO
 		
-		return null;
+		return this.ID;
 	}
 	
 	public Integer getE() {
@@ -191,7 +236,7 @@ public class Node {
 		
 		// TODO
 
-		return null;
+		return this.fExp;
 	}
 	
 	public Integer getK() {
@@ -200,7 +245,7 @@ public class Node {
 		
 		// TODO
 
-		return null;
+		return this.divisor;
 	}
 	
 
@@ -302,6 +347,11 @@ public class Node {
 
 	public static void main(String[] args) {
 		
+		Map<Integer,Node> g = new HashMap();
+		for(int i = 0 ; i<20 ; i++) g.put( i, new Node(1, 3, 7, 33, Boolean.FALSE, Boolean.FALSE, g, new MessageTrackCheck(1)));
+	
+		
+		Node n = new Node(1, 3, 7, 33, Boolean.FALSE, Boolean.FALSE, g, new MessageTrackCheck(1));
 	}
 
 }

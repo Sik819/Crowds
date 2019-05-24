@@ -5,9 +5,7 @@ import java.math.*;  // for BigInteger
 public class NodeTransitionFunction {
 	private Integer kVal;
 	private Integer exp;
-	private Integer xPowExp = 1;
-	private Integer fx;
-
+	
 	public NodeTransitionFunction(Integer exp, Integer KVal) {
 		// CONSTUCTOR: Sets the class to calculate f(x) = (x ^ exp) mod KVal 
 
@@ -25,7 +23,8 @@ public class NodeTransitionFunction {
 		// POST: Implements f(val)
 		
 		// TODO
-		
+		Integer xPowExp = 1;
+		Integer fx = 0;
 		for(int i = 0; i < exp/2 ;i++) xPowExp*=val;
 		fx = xPowExp%kVal;
 		fx *= fx;
@@ -46,9 +45,7 @@ public class NodeTransitionFunction {
 
 	
 	public static void main(String[] args) {
-		NodeTransitionFunction f = new NodeTransitionFunction(3, 33);
-		
-		System.out.println(f.apply(5));
+		NodeTransitionFunction f = new NodeTransitionFunction(7, 33);
 	}
 	
 }
