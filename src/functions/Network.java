@@ -30,9 +30,7 @@ public class Network {
 	
 	
 	public Network() {
-		// CONSTRUCTOR
-		
-		// TODO
+		lookup = new HashMap<Integer,Node>();
 	}
 	
 	public Vector<Vector<Integer> > readNodesFromFile(String fInName) throws IOException {
